@@ -1,0 +1,37 @@
+name: Auto News Fetcher
+
+on:
+  schedule:
+    - cron: '0 */3 * * *' # Har 3 ghante mein automatic run hoga
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: pip install feedparser google-genai
+
+      - name: Run Script
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python fetch_news.py
+
+      - name: Commit and Push New Articles
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/news.json
+          git commit -m "Auto: Updated latest news" || exit 0
+          git push
