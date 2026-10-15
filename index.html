@@ -3,18 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KDS News Portal</title>
+    <title>KDS News - ताज़ा और निष्पक्ष खबरें</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 text-gray-900">
-    <header class="bg-blue-600 text-white p-4 shadow-md text-center">
-        <h1 class="text-3xl font-bold">🤖 KDS AI न्यूज़ पोर्टल</h1>
-        <p class="text-sm mt-1">ताज़ा खबरें, जो आर्टिफिशियल इंटेलिजेंस द्वारा अपडेट होती हैं।</p>
+<body class="bg-gray-50 text-gray-900 font-sans">
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center max-w-5xl">
+            <h1 class="text-2xl font-bold tracking-wide">📰 KDS <span class="text-red-500">NEWS</span></h1>
+            <span class="text-xs text-gray-400 bg-slate-800 px-3 py-1 rounded-full border border-slate-700">24/7 लाइव अपडेटेड</span>
+        </div>
     </header>
     
-    <main class="container mx-auto p-4 max-w-4xl" id="news-container">
-        <p class="text-center text-gray-500 mt-10">खबरें लोड हो रही हैं...</p>
+    <!-- Main Content -->
+    <main class="container mx-auto p-4 max-w-3xl my-6" id="news-container">
+        <div class="text-center py-12 text-gray-500">खबरें लोड हो रही हैं...</div>
     </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-gray-400 text-xs text-center py-6 mt-12 border-t border-slate-800">
+        <p>© 2026 KDS News. सर्वाधिकार सुरक्षित। | समाचार विभिन्न अधिकृत स्रोतों से संकलित।</p>
+    </footer>
 
     <script>
         fetch('data/news.json')
@@ -24,19 +33,22 @@
                 container.innerHTML = '';
                 data.forEach(item => {
                     container.innerHTML += `
-                        <div class="bg-white p-6 rounded-lg shadow-md mb-6 border-l-4 border-blue-500">
-                            <span class="text-xs bg-blue-100 text-blue-800 font-semibold px-2.5 py-0.5 rounded">${item.category || 'General'}</span>
-                            <h2 class="text-xl font-bold mt-2 text-gray-800">${item.headline}</h2>
-                            <p class="text-gray-600 mt-2">${item.summary}</p>
-                            <div class="mt-4 flex justify-between items-center text-sm text-gray-500">
-                                <span>प्रकाशित: ${item.published_at || 'हाल ही में'}</span>
-                                <a href="${item.link}" target="_blank" class="text-blue-600 font-semibold hover:underline">मूल स्रोत पढ़ें &rarr;</a>
+                        <article class="bg-white p-6 rounded-xl shadow-sm mb-6 border border-gray-100 hover:shadow-md transition">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-xs font-semibold bg-red-50 text-red-600 px-3 py-1 rounded-full uppercase tracking-wider">${item.category || 'मुख्य समाचार'}</span>
+                                <span class="text-xs text-gray-400">${item.published_at || 'हाल ही में'}</span>
                             </div>
-                        </div>
+                            <h2 class="text-xl font-bold text-gray-800 leading-snug mb-3">${item.headline}</h2>
+                            <p class="text-gray-600 leading-relaxed mb-4 text-base">${item.summary}</p>
+                            <div class="flex justify-between items-center pt-3 border-t border-gray-100 text-sm">
+                                <span class="text-xs text-gray-500 italic">मूल स्रोत: ${item.source_name || 'समाचार एजेंसी'}</span>
+                                <a href="${item.link}" target="_blank" class="text-red-600 font-semibold hover:underline flex items-center gap-1">पूरा लेख पढ़ें &rarr;</a>
+                            </div>
+                        </article>
                     `;
                 });
             }).catch(() => {
-                document.getElementById('news-container').innerHTML = '<p class="text-center text-red-500">खबरें लोड करने में समस्या आ रही है।</p>';
+                document.getElementById('news-container').innerHTML = '<p class="text-center text-red-500">फिलहाल खबरें उपलब्ध नहीं हैं।</p>';
             });
     </script>
 </body>
